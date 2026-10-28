@@ -466,30 +466,45 @@
     startButton.hidden = true;
     quizCard.hidden = false;
     quizCard.classList.add("is-fullscreen");
+    document.body.classList.add("quiz-open");
     renderQuestion();
-    if (typeof quizCard.requestFullscreen === "function") {
+    const requestFullscreen = quizCard.requestFullscreen || quizCard.webkitRequestFullscreen;
+    if (typeof requestFullscreen === "function") {
       try {
-        await quizCard.requestFullscreen();
+        await requestFullscreen.call(quizCard);
       } catch {
-        quizCard.focus();
+        // Keep the in-page fullscreen layout when native fullscreen is unavailable.
       }
     }
     quizCard.focus();
   });
-  exitButton.addEventListener("click", () => {
-    if (document.fullscreenElement === quizCard) {
-      document.exitFullscreen();
-    } else {
-      closeQuiz();
+  exitButton.addEventListener("click", async () => {
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+    const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen;
+    if (fullscreenElement === quizCard && typeof exitFullscreen === "function") {
+      try {
+        await exitFullscreen.call(document);
+      } catch (error) {
+        console.error("No se pudo salir de la pantalla completa nativa.", error);
+        voiceStatus.textContent = "No se pudo salir de la pantalla completa. Inténtalo de nuevo.";
+        voiceStatus.hidden = false;
+        return;
+      }
     }
+    closeQuiz();
   });
-  document.addEventListener("fullscreenchange", () => {
-    if (document.fullscreenElement !== quizCard && quizCard.classList.contains("is-fullscreen")) closeQuiz();
+  ["fullscreenchange", "webkitfullscreenchange"].forEach(eventName => {
+    document.addEventListener(eventName, () => {
+      const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+      if (fullscreenElement !== quizCard && quizCard.classList.contains("is-fullscreen")) closeQuiz();
+    });
   });
 
   function closeQuiz() {
     stopTimer();
+    if (quizCard.hidden) return;
     quizCard.classList.remove("is-fullscreen");
+    document.body.classList.remove("quiz-open");
     quizCard.hidden = true;
     startButton.hidden = false;
     startButton.focus();
