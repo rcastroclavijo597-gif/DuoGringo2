@@ -102,36 +102,47 @@
           </button>
         </div>
 
-        <article class="quiz-card" aria-labelledby="question-title">
-          <div class="quiz-topline">
-            <div class="quiz-label"><span class="quiz-dot"></span> <span id="game-label">RETO ALEATORIO</span></div>
-            <div class="round-count"><i class="bi bi-stars" aria-hidden="true"></i> <span id="round-count">Reto 1</span></div>
-          </div>
-          <div class="progress-track" role="progressbar" aria-label="Progreso de esta ronda" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
-            <span id="progress-fill"></span>
-          </div>
-          <div class="question-area">
-            <div class="question-illustration" id="question-emoji" aria-hidden="true">🐱</div>
-            <div class="question-copy">
-              <p class="question-hint" id="question-hint">PISTA: UN ANIMALITO QUE DICE MIAU</p>
-              <h3 id="question-title">¿Cómo se dice “gato” en inglés?</h3>
-              <p class="question-subtitle" id="question-subtitle">Toca la respuesta correcta</p>
+        <button class="start-quiz-button" id="start-quiz" type="button">Empezar <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+        <article class="quiz-card" id="quiz-card" aria-labelledby="question-title" tabindex="-1" hidden>
+          <div class="quiz-content">
+            <div class="quiz-topline">
+              <div class="quiz-label"><span class="quiz-dot"></span> <span id="game-label">RETO ALEATORIO</span></div>
+              <div class="quiz-top-actions">
+                <div class="round-count"><i class="bi bi-stars" aria-hidden="true"></i> <span id="round-count">Reto 1</span></div>
+                <div class="question-timer" id="question-timer-wrap" role="timer" aria-label="Tiempo restante: 10 segundos">
+                  <i class="bi bi-clock" aria-hidden="true"></i> <strong id="question-timer">10</strong><span>s</span>
+                </div>
+                <button class="exit-quiz-button" id="exit-quiz" type="button" aria-label="Salir del quiz" title="Salir del quiz"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+              </div>
             </div>
-            <button class="listen-button" id="repeat-audio" type="button" aria-label="Escuchar palabra en inglés" title="Escuchar palabra">
-              <i class="bi bi-volume-up-fill" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="answer-grid" id="answer-options" role="group" aria-label="Opciones de respuesta"></div>
-          <div class="scramble-area" id="scramble-area" hidden>
-            <div class="scramble-answer" id="scramble-answer" aria-label="Tu respuesta"></div>
-            <div class="letter-grid" id="letter-options" role="group" aria-label="Letras para formar la respuesta"></div>
-          </div>
-          <div class="feedback" id="feedback" role="status" aria-live="polite" hidden></div>
-          <p class="voice-status" id="voice-status" role="status" aria-live="polite" hidden></p>
-          <div class="quiz-footer">
-            <p class="encouragement"><span aria-hidden="true">💡</span> ¡No tengas miedo de equivocarte!</p>
-            <button class="check-button" id="check-answer" type="button" disabled>COMPROBAR <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
-            <button class="check-button next-button" id="next-question" type="button" hidden>SIGUIENTE <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+            <div class="progress-track" role="progressbar" aria-label="Preguntas correctas para completar el reto" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
+              <span id="progress-fill"></span>
+            </div>
+            <div class="challenge-celebration" id="challenge-celebration" role="status" aria-live="polite" hidden>
+              <span aria-hidden="true">🎉</span> ¡Meta inicial alcanzada! Completaste tus primeras 5 preguntas.
+            </div>
+            <div class="question-area">
+              <div class="question-illustration" id="question-emoji" aria-hidden="true">🐱</div>
+              <div class="question-copy">
+                <p class="question-hint" id="question-hint">PISTA: UN ANIMALITO QUE DICE MIAU</p>
+                <h3 id="question-title">¿Cómo se dice “gato” en inglés?</h3>
+                <p class="question-subtitle" id="question-subtitle">Toca la respuesta correcta</p>
+              </div>
+              <button class="listen-button" id="repeat-audio" type="button" aria-label="Escuchar palabra en inglés" title="Escuchar palabra">
+                <i class="bi bi-volume-up-fill" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="answer-grid" id="answer-options" role="group" aria-label="Opciones de respuesta"></div>
+            <div class="scramble-area" id="scramble-area" hidden>
+              <div class="scramble-answer" id="scramble-answer" aria-label="Tu respuesta"></div>
+              <div class="letter-grid" id="letter-options" role="group" aria-label="Letras para formar la respuesta"></div>
+            </div>
+            <div class="feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+            <p class="voice-status" id="voice-status" role="status" aria-live="polite" hidden></p>
+            <div class="quiz-footer">
+              <button class="check-button" id="check-answer" type="button" disabled>COMPROBAR <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              <button class="check-button next-button" id="next-question" type="button" hidden>SIGUIENTE <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+            </div>
           </div>
         </article>
       </div>
@@ -140,9 +151,9 @@
         <div class="daily-card">
           <div class="daily-header"><span class="daily-icon" aria-hidden="true">🌈</span><span>RETO DEL DÍA</span></div>
           <h3>¡Cada palabra<br>es una aventura!</h3>
-          <p>Completa 5 preguntas para ganar una lluvia de estrellas.</p>
+          <p>Responde correctamente 5 preguntas para ganar una lluvia de estrellas.</p>
           <div class="daily-progress"><span class="daily-progress-fill" id="daily-progress-fill"></span></div>
-          <div class="daily-count"><span id="daily-count">0 de 5 preguntas</span><span aria-hidden="true">✨</span></div>
+          <div class="daily-count"><span id="daily-count">0 de 5 respuestas correctas</span><span aria-hidden="true">✨</span></div>
         </div>
         <div class="tip-card">
           <div class="tip-icon" aria-hidden="true">🧠</div>
@@ -156,12 +167,6 @@
       </aside>
     </section>
 
-    <section class="bottom-note container">
-      <span aria-hidden="true">🦉</span>
-      <p>¡Vas muy bien! <strong>Equivocarse también es aprender.</strong></p>
-      <span class="note-stars" aria-hidden="true">✦ ✧ ✦</span>
-    </section>
   </main>
-  <footer class="footer"><p>Hecho con <span aria-label="amor">💚</span> para pequeños exploradores del inglés</p></footer>
 </body>
 </html>
